@@ -1,0 +1,20 @@
+{
+    "name": "raideer/twitch-api",
+    "description": "Twitch.Tv API Wrapper in php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "raideer",
+            "email": "idmania1@gmail.com"
+        }
+    ],
+    "require": {
+      "guzzlehttp/guzzle": "6.*",
+      "symfony/options-resolver": "3.*"
+    },
+    "autoload": {
+      "psr-4": {
+        "Raideer\\TwitchApi\\": "src/"
+      }
+    }
+}
