@@ -1,5 +1,5 @@
 <?php
-namespace Raideer\Tweech\TwitchApi\Resources;
+namespace Raideer\TwitchApi\Resources;
 
 class Channels extends Resource{
 

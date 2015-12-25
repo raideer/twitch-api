@@ -1,8 +1,8 @@
 <?php
-namespace Raideer\Tweech\TwitchApi\Resources;
+namespace Raideer\TwitchApi\Resources;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Raideer\Tweech\Api\Wrapper;
+use Raideer\TwitchApi\Wrapper;
 
 abstract class Resource{
 
