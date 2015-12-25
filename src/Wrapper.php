@@ -1,5 +1,5 @@
 <?php
-namespace Raideer\Tweech\TwitchApi;
+namespace Raideer\TwitchApi;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client as Guzzle;
@@ -85,7 +85,16 @@ class Wrapper{
   public function get($target, $options = []){
 
     try{
-      $response = $this->client->get($target, $options);
+
+      $response = $this->client->get($target, array_merge_recursive(
+        [
+          "headers" => [
+            "Accept" => "application/vnd.twitchtv.v3+json"
+          ]
+        ],
+        $options
+      ));
+
     }catch(RequestException $e){
       if($e->hasResponse()) {
         $response = $e->getResponse();
