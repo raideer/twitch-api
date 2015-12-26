@@ -10,12 +10,12 @@ use GuzzleHttp\Client as Guzzle;
 class Wrapper{
 
   protected $apiURL = "https://api.twitch.tv/kraken/";
+  protected $authURL = "https://api.twitch.tv/kraken/oauth2/token";
 
   protected $client;
   protected $resources = [];
-  protected $hasAuthToken = false;
-  protected $authToken;
-  protected $auth;
+  protected $oauthResponse;
+  protected $authorized = false;
 
   /**
    * API Resources
@@ -39,7 +39,6 @@ class Wrapper{
      */
     $this->client = new Guzzle(
       [
-        'base_uri' => $this->apiURL,
         'verify' => realpath( __DIR__ . "/cacert.pem")
       ]
     );
@@ -53,20 +52,33 @@ class Wrapper{
     $this->streams   = new Resources\Streams($this);
     $this->teams     = new Resources\Teams($this);
     $this->users     = new Resources\Users($this);
-    $this->videos     = new Resources\Videos($this);
+    $this->videos    = new Resources\Videos($this);
   }
 
   public function registerResource(Resources\Resource $resource){
     $this->resources[$resource->getName()] = $resource;
   }
 
-  public function setAuthToken($token){
-    $this->authToken = $token;
-    $this->hasAuthToken = true;
+  private function bindOAuthResponse(OAuthResponse $response){
+    $this->oauthResponse = $response;
+    $this->authorized = true;
   }
 
-  public function setAuth(Auth $auth){
-    $this->auth = $auth;
+  public function authorize($code, $clientSecret, OAuth $oauth){
+    $response = $this->client->request("POST", $this->authURL, ['form_params' => [
+        "client_id" => $oauth->getClientId(),
+        "client_secret" => $clientSecret,
+        "grant_type" => "authorization_code",
+        "redirect_uri" => $oauth->getRedirectUri(),
+        "code" => $code,
+        "state" => $oauth->getState()
+    ]]);
+
+    $this->bindOAuthResponse(new OAuthResponse($response));
+  }
+
+  public function isAuthorized(){
+    return $this->authorized;
   }
 
   public function getResources(){
@@ -95,7 +107,11 @@ class Wrapper{
   }
 
   public function checkScope($scope, $throwError = false){
-    if($this->auth->hasScope($scope)){
+    if(!$this->isAuthorized()){
+      throw new Exceptions\UnauthorizedException("Api not authorized");
+      exit(1);
+    }
+    if($this->oauthResponse->hasScope($scope)){
       return true;
     }
 
@@ -114,20 +130,13 @@ class Wrapper{
     ];
 
     if($authorized){
-      if($this->auth->getAccessToken()){
-        $headers['Authorization'] = "OAuth " . $this->auth->getAccessToken();
-      }else{
-        throw new Exceptions\UnauthorizedException("Access Token not provided");
-        exit(1);
-      }
+      $headers['Authorization'] = "OAuth " . $this->oauthResponse->getAccessToken();
     }
 
     $options = array_merge_recursive(["headers" => $headers], $options);
 
-    print_r($options);
-
     try{
-      $response = $this->client->request($type, $target, $options);
+      $response = $this->client->request($type, $this->apiURL . $target, $options);
 
     }catch(RequestException $e){
 
