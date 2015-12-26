@@ -25,7 +25,7 @@ class Follows extends Resource{
       "cursor" => null
     ];
 
-    return $this->wrapper->get("channels/$channel/follows", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","channels/$channel/follows", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   /**
@@ -46,12 +46,12 @@ class Follows extends Resource{
       "sortby" => "created_at"
     ];
 
-    return $this->wrapper->get("users/$user/follows/channels", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","users/$user/follows/channels", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   public function getRelationship($user, $target){
 
-    return $this->wrapper->get("users/$user/follows/channels/$target");
+    return $this->wrapper->request("GET","users/$user/follows/channels/$target");
   }
 
 }
