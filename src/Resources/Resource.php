@@ -23,14 +23,12 @@ abstract class Resource{
     $resolver->setDefaults($defaults);
 
     if(!empty($required)){
-      foreach($required as $item){
-        $resolver->setRequired($item);
-      }
+      $resolver->setRequired($required);
     }
 
     if(!empty($allowedTypes)){
-      foreach($allowedTypes as $name => $type){
-        $resolver->setAllowedValues($name, $type);
+      foreach($allowedTypes as $type => $value){
+        $resolver->setAllowedValues($type, $value);
       }
     }
 
