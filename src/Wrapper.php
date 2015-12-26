@@ -13,6 +13,9 @@ class Wrapper{
 
   protected $client;
   protected $resources = [];
+  protected $hasAuthToken = false;
+  protected $authToken;
+  protected $auth;
 
   /**
    * API Resources
@@ -57,6 +60,15 @@ class Wrapper{
     $this->resources[$resource->getName()] = $resource;
   }
 
+  public function setAuthToken($token){
+    $this->authToken = $token;
+    $this->hasAuthToken = true;
+  }
+
+  public function setAuth(Auth $auth){
+    $this->auth = $auth;
+  }
+
   public function getResources(){
 
     return array_keys($this->resources);
@@ -65,7 +77,7 @@ class Wrapper{
   public function resource($name){
 
     if(!isset($this->resources[$name])){
-      throw new InvalidArgumentException("Resource $name does not exist!");
+      throw new Exceptions\ResourceException("Resource $name does not exist!");
       return;
     }
 
@@ -82,20 +94,43 @@ class Wrapper{
     return array_key_exists(strtolower($resource));
   }
 
-  public function get($target, $options = []){
+  public function checkScope($scope, $throwError = false){
+    if($this->auth->hasScope($scope)){
+      return true;
+    }
+
+    if($throwError){
+      throw new Exceptions\ScopeException("Request out of scope ($scope)!");
+      exit(1);
+    }
+
+    return false;
+  }
+
+  public function request($type, $target, $options = [], $authorized = false){
+
+    $headers = [
+      "Accept" => "application/vnd.twitchtv.v3+json"
+    ];
+
+    if($authorized){
+      if($this->auth->getAccessToken()){
+        $headers['Authorization'] = "OAuth " . $this->auth->getAccessToken();
+      }else{
+        throw new Exceptions\UnauthorizedException("Access Token not provided");
+        exit(1);
+      }
+    }
+
+    $options = array_merge_recursive(["headers" => $headers], $options);
+
+    print_r($options);
 
     try{
-
-      $response = $this->client->get($target, array_merge_recursive(
-        [
-          "headers" => [
-            "Accept" => "application/vnd.twitchtv.v3+json"
-          ]
-        ],
-        $options
-      ));
+      $response = $this->client->request($type, $target, $options);
 
     }catch(RequestException $e){
+
       if($e->hasResponse()) {
         $response = $e->getResponse();
       }else{
