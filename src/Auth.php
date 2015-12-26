@@ -54,6 +54,16 @@ class Auth{
     return $this;
   }
 
+  public function addScope($scope){
+    $this->scopes[] = $scope;
+
+    return $this;
+  }
+
+  public function hasScope($scope){
+    return in_array($scope, $this->scopes);
+  }
+
   public function setToken($token = null){
     if(!$token) $token = uniqid();
     $this->token = $token;
@@ -71,7 +81,11 @@ class Auth{
     return $this->clientId && $this->redirectUri && $this->scopes && $this->token;
   }
 
-  public function getAccessToken($code, $clientSecret = null){
+  public function getAccessToken(){
+    return $this->accessToken;
+  }
+
+  public function requestAccessToken($code, $clientSecret = null){
 
     $this->setClientSecret($clientSecret);
 
@@ -94,7 +108,7 @@ class Auth{
     $this->accessToken = $body->access_token;
     $this->refreshToken = $body->refresh_token;
 
-    return $this->accessToken;
+    return $this;
   }
 
   public function getUrl(){
