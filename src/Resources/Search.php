@@ -15,7 +15,7 @@ class Search extends Resource{
       "offset" => 0
     ];
 
-    return $this->wrapper->get("search/channels", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","search/channels", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   public function searchStreams($query, $options = []){
@@ -27,7 +27,7 @@ class Search extends Resource{
       "hls" => null
     ];
 
-    return $this->wrapper->get("search/streams", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","search/streams", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   public function searchGames($query, $options = []){
@@ -39,7 +39,7 @@ class Search extends Resource{
       "live" => false
     ];
 
-    return $this->wrapper->get("search/games", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper-request("GET","search/games", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
 }

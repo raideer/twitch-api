@@ -9,7 +9,7 @@ class Users extends Resource{
 
   public function getUser($name){
 
-    return $this->wrapper->get("users/$name");
+    return $this->wrapper->request("GET","users/$name");
   }
 
 }

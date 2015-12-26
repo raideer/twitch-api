@@ -9,7 +9,7 @@ class Videos extends Resource{
 
   public function getVideo($id){
 
-    return $this->wrapper->get("videos/$id");
+    return $this->wrapper->request("GET","videos/$id");
   }
 
   public function getTopVideos($options = []){
@@ -25,7 +25,7 @@ class Videos extends Resource{
       "period" => ["week", "month", "all"]
     ];
 
-    return $this->wrapper->get("videos/top", ['query' => $this->resolveOptions($options, $defaults, [], $values)]);
+    return $this->wrapper->request("GET","videos/top", ['query' => $this->resolveOptions($options, $defaults, [], $values)]);
   }
 
   public function getChannelVideos($channel, $options = []){
@@ -42,7 +42,7 @@ class Videos extends Resource{
       "broadcasts" => [true, false]
     ];
 
-    return $this->wrapper->get("channels/$channel/videos", ['query' => $this->resolveOptions($options, $defaults, [], $values)]);
+    return $this->wrapper->request("GET","channels/$channel/videos", ['query' => $this->resolveOptions($options, $defaults, [], $values)]);
   }
 
 }

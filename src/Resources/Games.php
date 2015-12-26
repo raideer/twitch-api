@@ -14,7 +14,7 @@ class Games extends Resource{
       "offset" => 0
     ];
 
-    return $this->wrapper->get("games/top", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","games/top", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
 

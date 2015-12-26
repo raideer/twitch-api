@@ -14,12 +14,12 @@ class Teams extends Resource{
       "offset" => 0
     ];
 
-    return $this->wrapper->get("teams", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","teams", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   public function getTeam($team){
 
-    return $this->wrapper->get("teams/$team");
+    return $this->wrapper->request("GET","teams/$team");
   }
 
 

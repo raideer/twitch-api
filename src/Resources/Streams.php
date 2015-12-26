@@ -9,7 +9,7 @@ class Streams extends Resource{
 
   public function getStream($channel){
 
-    return $this->wrapper->get("streams/$channel");
+    return $this->wrapper->request("GET","streams/$channel");
   }
 
   public function getStreams($options = []){
@@ -27,7 +27,7 @@ class Streams extends Resource{
       "stream_type" => ["all","playlist","live"]
     ];
 
-    return $this->wrapper->get("streams", ['query' => $this->resolveOptions($options, $defaults, [], $types)]);
+    return $this->wrapper->request("GET","streams", ['query' => $this->resolveOptions($options, $defaults, [], $types)]);
   }
 
   public function getFeatured($options = []){
@@ -37,7 +37,7 @@ class Streams extends Resource{
       "offset" => 0
     ];
 
-    return $this->wrapper->get("streams/featured", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","streams/featured", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 
   public function getSummary($options = []){
@@ -46,6 +46,6 @@ class Streams extends Resource{
       "game" => null
     ];
 
-    return $this->wrapper->get("streams/summary", ['query' => $this->resolveOptions($options, $defaults)]);
+    return $this->wrapper->request("GET","streams/summary", ['query' => $this->resolveOptions($options, $defaults)]);
   }
 }
