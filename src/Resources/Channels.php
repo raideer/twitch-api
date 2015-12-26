@@ -7,21 +7,40 @@ class Channels extends Resource{
     return "channels";
   }
 
-  public function getChannel($name){
+  public function getChannel($name = null){
+    if(!$name){
+      $this->wrapper->checkScope("channel_read", true);
 
-    return $this->wrapper->get("channels/$name");
+      return $this->wrapper->request("GET","channel", [], true);
+    }
+
+    return $this->wrapper->request("GET","channels/$name");
+  }
+
+  public function getEditors(){
+    $this->wrapper->checkScope("channel_read", true);
+
+    return $this->wrapper->request("GET","channels/$name/editors", [], true);
+  }
+
+  public function updateChannel($channel, $params){
+    $this->wrapper->checkScope("channel_editor", true);
+
+    return $this->wrapper->request("PUT", "channels/$channel/", ['form_params' => $params], true);
+  }
+
+  public function resetStreamKey($channel){
+    $this->wrapper->checkScope("channel_stream", true);
+
+    return $this->wrapper->request("DELETE", "channels/$channel/stream_key", [], true);
   }
 
   public function getVideos($name){
-    return $this->wrapper->get("channels/$name/videos");
+    return $this->wrapper->request("GET","channels/$name/videos");
   }
 
   public function getFollows($name){
-    return $this->wrapper->get("channels/$name/follows");
-  }
-
-  public function getEditors($name){
-    return $this->wrapper->get("channels/$name/editors");
+    return $this->wrapper->request("GET","channels/$name/follows");
   }
 
 }
