@@ -76,3 +76,36 @@ $wrapper->Channels->getChannel(); //Returns the authenticated user's channel
 ```
 
 If the request is out of scope, `Raideer\TwitchApi\Exceptions\UnauthorizedException` will be thrown.
+
+#### Example
+
+```php
+$client = new GuzzleHttp\Client;
+$wrapper = new Raideer\TwitchApi\Wrapper($client);
+
+$settings = [
+  'client_id'     => 'myClientId',
+  'redirect_uri'  => 'http://localhost',
+  'state'         => 'myUniqueToken',
+  'scope'         => ['channel_editor']
+];
+
+$oauth = new Raideer\TwitchApi\Oauth($settings);
+
+// You can also add a scope using the addScope method
+$oauth->addScope('channel_read');
+
+$url = $oauth->getUrl();
+
+/*
+ * AFTER SUCCESSFUL AUTHORIZATION
+ * http://localhost?code=someCodeReturned0ByTwitch
+ */
+
+$code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
+$wrapper->authorize($code, "myClientSecret", $oauth);
+
+$response = $wrapper->Channels->getChannel();
+
+echo "I'm currently playing " . $response->game;
+```
