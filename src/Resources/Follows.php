@@ -37,7 +37,10 @@ class Follows extends Resource{
    * @param  array  $options List of parameters
    * @return object
    */
-  public function getFollows($user, $options = []){
+  public function getFollows($user = null, $options = []){
+    if(!$user){
+      $user = $this->wrapper->getAuthorizedUser();
+    }
 
     $defaults = [
       "limit" => 25,
@@ -52,6 +55,21 @@ class Follows extends Resource{
   public function getRelationship($user, $target){
 
     return $this->wrapper->request("GET","users/$user/follows/channels/$target");
+  }
+
+  public function followUser($target, $notifications = false){
+    $user = $this->wrapper->getAuthorizedUser();
+    $this->wrapper->checkScope("user_follows_edit", true);
+
+    return $this->wrapper->request("PUT","users/$user/follows/channels/$target", ['form_params' => ['notifications' => $notifications]], true);
+  }
+
+  public function unfollowUser($target){
+    $user = $this->wrapper->getAuthorizedUser();
+
+    $this->wrapper->checkScope("user_follows_edit", true);
+
+    return $this->wrapper->request("DELETE","users/$user/follows/channels/$target", [], true);
   }
 
 }
