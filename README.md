@@ -60,10 +60,10 @@ $url = $oauth->getUrl();
 Once the user authorizes your application, they will be redirected to your specified URI with a code, that's necessary for obtaining the access token.
 
 Now we can pass all the information to the Wrapper.
-Wrapper's authorize method requires 3 parameters:
-1. The code that was attached to the URI
-2. Your client secret (Obtained when you register your application)
-3. The oauth object that we just created
+Wrapper's authorize method requires 3 parameters:    
+1. The code that was attached to the URI    
+2. Your client secret (Obtained when you register your application)    
+3. The oauth object that we just created    
 
 ```php
 $wrapper->authorize($code, $clientSecret, $oauth);
