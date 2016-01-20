@@ -31,17 +31,12 @@ class Wrapper{
   protected $users;
   protected $videos;
 
-  public function __construct(){
+  public function __construct(Guzzle $client){
 
     /**
-     * Creating a Guzzle Client and setting CaCert file location for SSL verification
      * @var GuzzleHttp\Client
      */
-    $this->client = new Guzzle(
-      [
-        'verify' => realpath( __DIR__ . "/cacert.pem")
-      ]
-    );
+    $this->client = $client;
 
     /**
      * Instantiating API resources
