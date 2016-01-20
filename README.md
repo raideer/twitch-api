@@ -80,6 +80,7 @@ If the request is out of scope, `Raideer\TwitchApi\Exceptions\UnauthorizedExcept
 #### Example
 
 ```php
+
 $client = new GuzzleHttp\Client;
 $wrapper = new Raideer\TwitchApi\Wrapper($client);
 
@@ -94,18 +95,24 @@ $oauth = new Raideer\TwitchApi\Oauth($settings);
 
 // You can also add a scope using the addScope method
 $oauth->addScope('channel_read');
+  
+if(!isset($_GET['code'])
+{
 
-$url = $oauth->getUrl();
+  $url = $oauth->getUrl();
+  
+  header("Location: $url");
+  die();
 
-/*
- * AFTER SUCCESSFUL AUTHORIZATION
- * http://localhost?code=someCodeReturned0ByTwitch
- */
+}else{
+  // http://localhost?code=someCodeReturned0ByTwitch
 
-$code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
-$wrapper->authorize($code, "myClientSecret", $oauth);
+  $code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
+  $wrapper->authorize($code, "myClientSecret", $oauth);
+  
+  $response = $wrapper->Channels->getChannel();
+  
+  echo "I'm currently playing " . $response->game;
 
-$response = $wrapper->Channels->getChannel();
-
-echo "I'm currently playing " . $response->game;
+}
 ```
