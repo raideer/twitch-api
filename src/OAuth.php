@@ -6,9 +6,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OAuth{
 
   protected $baseAuthUrl = "https://api.twitch.tv/kraken/oauth2/authorize";
+  protected $authURL = "https://api.twitch.tv/kraken/oauth2/token";
 
-  protected $clientId;
+  protected $OAuthResponse;
+  protected $clientSecret;
   protected $redirectUri;
+  protected $clientId;
   protected $scopes;
   protected $state;
 
@@ -21,7 +24,7 @@ class OAuth{
 
     $resolver = new OptionsResolver();
     $resolver->setDefaults(['scope' => []]);
-    $resolver->setRequired(['client_id', 'redirect_uri', 'state']);
+    $resolver->setRequired(['client_id', 'redirect_uri', 'state', 'client_secret']);
 
     $resolved = $resolver->resolve($settings);
 
@@ -30,6 +33,7 @@ class OAuth{
       $this->setRedirectUri($resolved["redirect_uri"]);
       $this->setScope($resolved["scope"]);
       $this->setState($resolved["state"]);
+      $this->clientSecret = $resolved['client_secret'];
     }
   }
 
@@ -121,6 +125,66 @@ class OAuth{
    */
   public function getState(){
     return $this->state;
+  }
+
+  /**
+   * Returns the OAuthResponse object that contains the access_token, registered scopes
+   * and the refresh_token
+   *
+   * @param  string $code     Code returned by OAuth
+   * @param  boolean $forceNew Force new token
+   * @return Raideer\TwitchApi\OAuthResponse
+   */
+  public function getResponse($code, $forceNew = false){
+    if(!$this->oauthResponse || $forceNew){
+      $form_params = [
+        "client_id"       => $this->getClientId(),
+        "client_secret"   => $this->clientSecret,
+        "grant_type"      => "authorization_code",
+        "redirect_uri"    => $this->getRedirectUri(),
+        "code"            => $code,
+        "state"           => $this->getState()
+      ];
+
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $this->authURL);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $form_params);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, 5);
+      $result = curl_exec($ch);
+      curl_close($ch);
+
+      $data = json_decode($result, true);
+      if(json_last_error() != JSON_ERROR_NONE){
+        throw new \UnexpectedValueException("Received data is not json");
+        return null;
+      }
+
+      $status = $data['status'];
+
+      if(strrpos($status, 20, -strlen($status)) === false){
+        throw new Exceptions\BadResponseException("Received bad response (".$data['status']."): ". $data['message']);
+        return null;
+      }
+
+      $this->OAuthResponse = new OAuthResponse($data);
+    }
+
+    return $this->OAuthResponse;
+  }
+
+  /**
+   * Checks if the scope is registered
+   * @param  string $scope Scope name
+   * @return boolean
+   */
+  public function checkScope($scope){
+    if($this->OAuthResponse){
+      return $this->OAuthResponse->hasScope($scope);
+    }
+
+    return in_array($scope, $this->getScope());
   }
 
   /**
