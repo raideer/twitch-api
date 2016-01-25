@@ -10,7 +10,7 @@
 ### Basic, unauthenticated requests.
 First we need to create the main Wrapper instance. The constructor takes a Guzzle Client as its only parameter.
 
-```
+```php
 $client = new GuzzleHttp\Client;
 
 $wrapper = new Raideer\TwitchApi\Wrapper($client);
@@ -20,7 +20,7 @@ Now we can access various Twitch API resources using the wrapper.
 You can see all the resources and their methods here:
 https://github.com/justintv/Twitch-API#index
 
-```
+```php
 /*
  * Wrapper->resource->function()
  */
@@ -33,7 +33,7 @@ Note: resource name capitalization desn't matter, so `$wrapper->CHANNELS->getCha
 
 Some methods can take an optional array of parameters.
 
-```
+```php
 $wrapper->Channels->getFollows('lirik', ['limit' => 40, 'direction' => 'asc'])
 ```
 
@@ -43,7 +43,7 @@ First we need to create an OAuth object, that will contain the necessary informa
 
 Read more about [authentication here](https://github.com/justintv/Twitch-API/blob/master/authentication.md).
 
-```
+```php
 $settings = [
   'client_id'     => 'Your Client ID',
   'redirect_uri'  => 'Your registered redirect URI',
@@ -60,19 +60,59 @@ $url = $oauth->getUrl();
 Once the user authorizes your application, they will be redirected to your specified URI with a code, that's necessary for obtaining the access token.
 
 Now we can pass all the information to the Wrapper.
-Wrapper's authorize method requires 3 parameters:
-1. The code that was attached to the URI
-2. Your client secret (Obtained when you register your application)
-3. The oauth object that we just created
+Wrapper's authorize method requires 3 parameters:    
+1. The code that was attached to the URI    
+2. Your client secret (Obtained when you register your application)    
+3. The oauth object that we just created    
 
-```
+```php
 $wrapper->authorize($code, $clientSecret, $oauth);
 ```
 
 Now the wrapper will receive the access token and we'll be able to make authenticated requests.
 
-```
+```php
 $wrapper->Channels->getChannel(); //Returns the authenticated user's channel
 ```
 
 If the request is out of scope, `Raideer\TwitchApi\Exceptions\UnauthorizedException` will be thrown.
+
+#### Example
+
+```php
+
+$client = new GuzzleHttp\Client;
+$wrapper = new Raideer\TwitchApi\Wrapper($client);
+
+$settings = [
+  'client_id'     => 'myClientId',
+  'redirect_uri'  => 'http://localhost',
+  'state'         => 'myUniqueToken',
+  'scope'         => ['channel_editor']
+];
+
+$oauth = new Raideer\TwitchApi\Oauth($settings);
+
+// You can also add a scope using the addScope method
+$oauth->addScope('channel_read');
+  
+if(!isset($_GET['code'])
+{
+
+  $url = $oauth->getUrl();
+  
+  header("Location: $url");
+  die();
+
+}else{
+  // http://localhost?code=someCodeReturned0ByTwitch
+
+  $code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
+  $wrapper->authorize($code, "myClientSecret", $oauth);
+  
+  $response = $wrapper->Channels->getChannel();
+  
+  echo "I'm currently playing " . $response->game;
+
+}
+```
