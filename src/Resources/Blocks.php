@@ -24,20 +24,19 @@ class Blocks extends Resource{
    *
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#get-usersuserblocks
-   * @param  array $options
+   * @param  string $channel Target Channel name
+   * @param  array $params
    * @return array
    */
-  public function getBlockedUsers($parameters = []){
-    $this->wrapper->checkScope("user_blocks_read", true);
-
-    $user = $this->wrapper->getAuthorizedUser();
+  public function getBlockedUsers($channel, $params = []){
+    $this->wrapper->checkScope("user_blocks_read");
 
     $defaults = [
       'limit' => 25,
       'offset' => 0
     ];
 
-    return $this->wrapper->request("GET","users/$user/blocks", ['query' => $this->resolveOptions($parameters, $defaults)], true);
+    return $this->wrapper->request("GET","users/$channel/blocks", ['query' => $this->resolveOptions($params, $defaults)], true);
   }
 
   /**
@@ -50,34 +49,32 @@ class Blocks extends Resource{
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#put-usersuserblockstarget
    *
+   * @param  string $channel Target Channel name
    * @param  string $target Target username
    * @return array
    */
-  public function blockUser($target){
-    $this->wrapper->checkScope("user_blocks_edit", true);
+  public function blockUser($channel, $target){
+    $this->wrapper->checkScope("user_blocks_edit");
 
-    $user = $this->wrapper->getAuthorizedUser();
-
-    return $this->wrapper->request("PUT", "users/$user/blocks/$target", [], true);
+    return $this->wrapper->request("PUT", "users/$channel/blocks/$target", [], true);
   }
 
   /**
    * AUTHENTICATED REQUEST
    *
-   * Removes $target from authenticated user's block list.
+   * Removes $target from $user's block list.
    *
    * Required scope: user_blocks_edit
    *
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#delete-usersuserblockstarget
    *
+   * @param  string $user  Target Channel name
    * @param  string $target Target username
    * @return array
    */
-  public function unblockUser($target){
-    $this->wrapper->checkScope("user_blocks_edit", true);
-
-    $user = $this->wrapper->getAuthorizedUser();
+  public function unblockUser($user, $target){
+    $this->wrapper->checkScope("user_blocks_edit");
 
     return $this->wrapper->request("DELETE", "users/$user/blocks/$target", [], true);
   }
