@@ -150,13 +150,11 @@ echo "I'm currently playing " . $response->game;
 ```
 
 ## Resources
-<table>
-  <tr><td> [Blocks](https://github.com/raideer/twitch-api#blocks) </td> <td>Channels</td> <td>Chat</td> <td>Follows</td></tr>
-  <tr><td>Games</td> <td>Ingests</td> <td>Search</td> <td>Streams</td></tr>
-  <tr><td>Subscribtions</td> <td>Teams</td> <td>Users</td> <td>Videos</td>/tr>
-</table>
+| Resource | Official documentation |
+| -------- | ---------------------- |
+| [Blocks](#blocks) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md |
+| [Channels](#channels) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md |
 ### Blocks
-https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md
 
 * ###### getBlockedUsers($user, $params)    
 `GET /users/:user/blocks`   
