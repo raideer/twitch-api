@@ -3,17 +3,10 @@ namespace Raideer\TwitchApi;
 
 class OAuthResponse{
 
-  protected $response;
-
   protected $contents;
 
-  public function __construct(\Psr\Http\Message\ResponseInterface $response){
-    $this->response = $response;
-    $this->contents = json_decode($this->response->getBody()->getContents());
-  }
-
-  public function getResponse(){
-    return $this->response;
+  public function __construct($data){
+    $this->contents = $data;
   }
 
   public function getContents(){
@@ -21,15 +14,15 @@ class OAuthResponse{
   }
 
   public function getAccessToken(){
-    return $this->contents->access_token;
+    return $this->contents['access_token'];
   }
 
   public function getRefreshToken(){
-    return $this->contents->refresh_token;
+    return $this->contents['refresh_token'];
   }
 
   public function getScope(){
-    return $this->contents->scope;
+    return $this->contents['scope'];
   }
 
   public function hasScope($scope){
