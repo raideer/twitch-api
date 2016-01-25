@@ -7,14 +7,13 @@ use GuzzleHttp\Client as Guzzle;
 class Wrapper{
 
   protected $apiURL = "https://api.twitch.tv/kraken/";
-  protected $authURL = "https://api.twitch.tv/kraken/oauth2/token";
 
   protected $client;
   protected $resources = [];
 
-  protected $oauthResponse;
   protected $authorized = false;
-  protected $authorizedUser;
+  protected $registeredScopes = [];
+  protected $accessToken;
 
   /**
    * API Resources
@@ -30,6 +29,9 @@ class Wrapper{
   protected $teams;
   protected $users;
   protected $videos;
+
+  protected $throttling = false;
+  protected $throttle;
 
   public function __construct(Guzzle $client){
 
@@ -53,6 +55,8 @@ class Wrapper{
     $this->teams     = new Resources\Teams($this);
     $this->users     = new Resources\Users($this);
     $this->videos    = new Resources\Videos($this);
+
+    $this->throttle = new Throttle(1000);
   }
 
   /**
@@ -61,58 +65,132 @@ class Wrapper{
    * @return void
    */
   public function registerResource(Resources\Resource $resource){
-    $this->resources[$resource->getName()] = $resource;
+    $this->resources[strtolower($resource->getName())] = $resource;
   }
 
   /**
-   * Attaches OAuthResponse object to the wrapper, so we can use
-   * authenticated requests
-   * @param  OAuthResponse $response
+   * Enables/disables throttling
+   *
+   * @param  boolean $bol Enable throttle
    * @return void
    */
-  private function bindOAuthResponse(OAuthResponse $response){
-    $this->oauthResponse = $response;
+  public function enableThrottle($bol = true){
+    if(!is_bool($bol)){
+      throw new \InvalidArgumentException("Parameter must be a Boolean");
+    }
+
+    $this->throttling = $bol;
+  }
+
+  /**
+   * Set how much time must pass before the next request
+   *
+   * @param int $ms Milliseconds
+   */
+  public function setThrottleInterval($ms){
+    if(!is_int($ms)){
+      throw new \InvalidArgumentException("Parameter must be an Integer");
+    }
+
+    $this->throttle->setInterval($ms);
+  }
+
+  /**
+   * Enables the authorized requests
+   *
+   * @param  string $args Access token
+   * OR
+   * @param  OAuthResponse $args Object returned by OAuth->getResponse()
+   * OR
+   * @param string $arg1 Access Token
+   * @param array $arg2 Array of registered scopes
+   *
+   * @return void
+   */
+  public function authorize($args){
+
+    $numArgs = func_num_args();
+
+    if($numArgs === 0){
+      throw new \InvalidArgumentException("Wrapper->authorize expects atleast 1 argument!");
+      return;
+    }
+
+    if($numArgs === 1){
+
+      $arg1 = func_get_arg(0);
+      if($arg1 instanceof OAuthResponse){
+
+        $this->accessToken = $arg1->getAccessToken();
+        $this->registeredScopes = $arg1->getScope();
+
+      }else if(is_string($arg1)){
+
+        $this->accessToken = $arg1;
+
+      }else{
+        throw new \InvalidArgumentException("Passed argument must be an access token OR an instance of Raideer\TwitchApi\OAuthResponse");
+        return;
+      }
+
+    }else if($numArgs === 2){
+
+      list($arg1, $arg2) = func_get_args();
+
+      if(is_string($arg1) && is_array($arg2)){
+        $this->accessToken = $arg1;
+        $this->registeredScopes = $arg2;
+      }else{
+        throw new \InvalidArgumentException("First argument must be an accessToken and the second must be an array of registered scopes");
+        return;
+      }
+
+    }else{
+      throw new \InvalidArgumentException("Wrapper->authorize expects 1 or 2 arguments");
+      return;
+    }
+
     $this->authorized = true;
   }
 
   /**
-   * Authenticates the app, so we can use authenticated requests
-   * @param  string $code         Code received from the redirect URI
-   * @param  string $clientSecret Client secret
-   * @param  OAuth  $oauth        OAuth object, that contains client information
-   * @return void
+   * Checks if scope is registered
+   *
+   * @param  string  $name   Scope name
+   * @param  boolean  $strict If false and registeredScopes array is empty, function will return true.
+   *                          Used by Resources. If an array of registered scopes is passed in
+   *                          Wrapper->authorize() function, authorized requests will check if scope is
+   *                          registered without making a request to the twitch api.
+   * @return boolean
    */
-  public function authenitcate($code, $clientSecret, OAuth $oauth){
-    $response = $this->client->request("POST", $this->authURL, ['form_params' => [
-        "client_id" => $oauth->getClientId(),
-        "client_secret" => $clientSecret,
-        "grant_type" => "authorization_code",
-        "redirect_uri" => $oauth->getRedirectUri(),
-        "code" => $code,
-        "state" => $oauth->getState()
-    ]]);
+  public function hasScope($name, $strict = true){
+    if(!$strict){
+      if(empty($this->registeredScopes)){
+        return true;
+      }
+    }
 
-    $this->bindOAuthResponse(new OAuthResponse($response));
-
-    $this->authorizedUser = $this->Users->getUser()->name;
+    return in_array($name, $this->registeredScopes);
   }
 
   /**
-   * Returns authenticated user name
-   * @return string
+   * Checks if scope is registered
+   * Throws an exception if scope doesn't exist
+   *
+   * @param  string $name   Scope name
+   * @param  boolean $strict
+   * @return void
    */
-  public function getAuthorizedUser(){
-    if(!$this->isAuthorized()){
-      throw new Exceptions\UnauthorizedException("Api not authorized");
-      exit(1);
+  public function checkScope($name, $strict = false){
+    if(!$this->hasScope($name, $strict)){
+      throw new Exceptions\OutOfScopeException("Scope $name is not registered!");
     }
-    return $this->authorizedUser;
   }
 
   /**
    * @return boolean
    */
-  public function isAuthenticated(){
+  public function isAuthorized(){
     return $this->authorized;
   }
 
@@ -134,7 +212,7 @@ class Wrapper{
 
     if(!isset($this->resources[$name])){
       throw new Exceptions\ResourceException("Resource $name does not exist!");
-      exit(1);
+      return;
     }
 
     return $this->resources[$name];
@@ -161,34 +239,8 @@ class Wrapper{
   }
 
   /**
-   * Checks if the scope is registered
-   * @param  string  $scope      Name of the scope
-   * @param  boolean $throwError Throw a ScopeException if scope is not registered
-   * @return boolean
-   */
-  public function checkScope($scope, $throwError = false){
-    /**
-     * Checking if client is authenticated
-     */
-    if(!$this->isAuthenticated()){
-      throw new Exceptions\UnauthorizedException("Client not authenticated");
-      exit(1);
-    }
-
-    if($this->oauthResponse->hasScope($scope)){
-      return true;
-    }
-
-    if($throwError){
-      throw new Exceptions\ScopeException("Request out of scope ($scope)!");
-      exit(1);
-    }
-
-    return false;
-  }
-
-  /**
    * Makes a GuzzleHttp request
+   *
    * @param  requestType  $type       GET, POST, PUT, DELETE
    * @param  string       $target     Target URL
    * @param  array        $options    Request options
@@ -202,12 +254,17 @@ class Wrapper{
     ];
 
     if($authorized){
-      $headers['Authorization'] = "OAuth " . $this->oauthResponse->getAccessToken();
+      $headers['Authorization'] = "OAuth " . $this->accessToken;
     }
 
     $options = array_merge_recursive(["headers" => $headers], $options);
 
     try{
+
+      if($this->throttling){
+        $this->throttle->throttle();
+      }
+
       $response = $this->client->request($type, $this->apiURL . $target, $options);
 
     }catch(RequestException $e){
