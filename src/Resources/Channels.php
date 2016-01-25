@@ -18,7 +18,8 @@ class Channels extends Resource{
 
   /**
    * Returns a channel object
-   * If channel name not provided, wrapper will assume it's an authenticated request (scope: channel_read).
+   * If channel name not provided, wrapper will assume it's an authenticated request and return
+   * authenticated channel (scope: channel_read).
    *
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md#get-channelschannel
@@ -28,7 +29,7 @@ class Channels extends Resource{
    */
   public function getChannel($name = null){
     if(!$name){
-      $this->wrapper->checkScope("channel_read", true);
+      $this->wrapper->checkScope("channel_read");
 
       return $this->wrapper->request("GET","channel", [], true);
     }
@@ -49,12 +50,8 @@ class Channels extends Resource{
    * @param  string $channel Target channel
    * @return array
    */
-  public function getEditors($channel = null){
-    $this->wrapper->checkScope("channel_read", true);
-
-    if(!$channel){
-      $channel = $this->wrapper->getAuthorizedUser();
-    }
+  public function getEditors($channel){
+    $this->wrapper->checkScope("channel_read");
 
     return $this->wrapper->request("GET","channels/$channel/editors", [], true);
   }
@@ -74,11 +71,7 @@ class Channels extends Resource{
    * @return array
    */
   public function updateChannel($channel, $params = []){
-    $this->wrapper->checkScope("channel_editor", true);
-
-    if(!$channel){
-      $channel = $this->wrapper->getAuthorizedUser();
-    }
+    $this->wrapper->checkScope("channel_editor");
 
     return $this->wrapper->request("PUT", "channels/$channel/", ['form_params' => ['channel' => $params]], true);
   }
@@ -96,12 +89,8 @@ class Channels extends Resource{
    * @param string $channel Target channel
    * @return array
    */
-  public function resetStreamKey($channel = null){
-    $this->wrapper->checkScope("channel_stream", true);
-
-    if(!$channel){
-      $channel = $this->wrapper->getAuthorizedUser();
-    }
+  public function resetStreamKey($channel){
+    $this->wrapper->checkScope("channel_stream");
 
     return $this->wrapper->request("DELETE", "channels/$channel/stream_key", [], true);
   }
@@ -116,16 +105,12 @@ class Channels extends Resource{
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md#post-channelschannelcommercial
    *
-   * @param  string  $channel Target channel. If null, uses the authenticated user
+   * @param  string  $channel Target channel
    * @param  integer $length  Length in seconds (30,60,90,120,150,180)
    * @return array
    */
-  public function startCommercial($channel = null, $length = 30){
-    $this->wrapper->checkScope("channel_commercial", true);
-
-    if(!$channel){
-      $channel = $this->wrapper->getAuthorizedUser();
-    }
+  public function startCommercial($channel, $length = 30){
+    $this->wrapper->checkScope("channel_commercial");
 
     $values = [
       "length" => [30,60,90,120,150,180]
@@ -158,7 +143,9 @@ class Channels extends Resource{
       "hls" => [true,false]
     ];
 
-    return $this->wrapper->request("GET","channels/$channel/videos", $this->resolveOptions($params, $defaults, [], $values));
+    $resolved = $this->resolveOptions($params, $defaults, [], $values);
+
+    return $this->wrapper->request("GET","channels/$channel/videos", ['query' => $resolved]);
   }
 
   /**
@@ -175,9 +162,14 @@ class Channels extends Resource{
   }
 
   /**
-   * [getFollows description]
-   * @param  [type] $channel [description]
-   * @return [type]          [description]
+   * Returns a list of follow objects for $channel
+   *
+   * Learn more:
+   * https://github.com/justintv/Twitch-API/blob/master/v3_resources/follows.md#get-channelschannelfollows
+   *
+   * @param  string $channel Target channel name
+   * @param  array  $params  Optional Parameters
+   * @return array
    */
   public function getFollows($channel, $params = []){
 
@@ -192,7 +184,9 @@ class Channels extends Resource{
       "direction" => ["asc", "desc"]
     ];
 
-    return $this->wrapper->request("GET","channels/$channel/follows", $this->resolveOptions($params, $defaults, [], $values));
+    $resolved = $this->resolveOptions($params, $defaults, [], $values);
+
+    return $this->wrapper->request("GET","channels/$channel/follows", ['query' => $resolved]);
   }
 
 }
