@@ -12,6 +12,10 @@
       "guzzlehttp/guzzle": "6.*",
       "symfony/options-resolver": "3.*"
     },
+    "require-dev": {
+      "phpunit/phpunit": "^5.1",
+      "mockery/mockery": "dev-master"
+    },
     "autoload": {
       "psr-4": {
         "Raideer\\TwitchApi\\": "src/"
