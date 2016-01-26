@@ -89,7 +89,7 @@ $wrapper->authorize($accessToken, $registeredScopes);
 ```
 
 If you authorize the wrapper only by passing the access token, the Wrapper will not be able to check wether the scope
-you're trying to access actually exists. 
+you're trying to access actually exists.
 
 Now you can make authorized requests.
 
@@ -138,7 +138,7 @@ $url = $oauth->getUrl();
 ```
 
 ```php
-  
+
 $code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
 $response = $oauth->getResponse($code);
 $wrapper->authorize($response);
@@ -148,45 +148,3 @@ $response = $wrapper->Channels->getChannel();
 echo "I'm currently playing " . $response->game;
 
 ```
-
-## Resources
-| Resource | Official documentation |
-| -------- | ---------------------- |
-| [Blocks](#blocks) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md |
-| [Channels](#channels) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md |
-### Blocks
-
-* ###### getBlockedUsers($user, $params)    
-`GET /users/:user/blocks`   
-$user -> Name of the target user
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Required?</th>
-            <th width="50">Type</th>
-            <th width=100%>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><code>limit</code></td>
-            <td>optional</td>
-            <td>integer</td>
-            <td>Maximum number of objects in array. Default is 25. Maximum is 100.</td>
-        </tr>
-        <tr>
-            <td><code>offset</code></td>
-            <td>optional</td>
-            <td>integer</td>
-            <td>Object offset for pagination. Default is 0.</td>
-        </tr>
-    </tbody>
-</table>
-
-* ###### blockUser($user, $target)   
-`PUT /users/:user/blocks/:target`   
-$user -> Authenticated user
-$target -> User to block
-
-* 
