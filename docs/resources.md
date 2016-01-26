@@ -9,20 +9,20 @@
 *AUTHENTICATED*  
 Scope:  `user_blocks_read`  
 
-* ###### **blockUser($user, $target)** - Add target to user's block list   
+* **blockUser($user, $target)** - Add target to user's block list   
 *AUTHENTICATED*    
 Scope: `user_blocks_edit`   
 
-* ###### **unblockUser($user, $target)** - Delete target from user's block list   
+* **unblockUser($user, $target)** - Delete target from user's block list   
 *AUTHENTICATED*    
 Scope: `user_blocks_edit`
 
 ### Channels
 
-* ###### **getChannel($user)** - Get channel object
+* **getChannel($user)** - Get channel object
 
-* ###### **getChannel()** - Get authenticated user's channel    
+* **getChannel()** - Get authenticated user's channel    
 *AUTHENTICATED*  
 Scope: `channel_read`
 
-* ###### **getVideos($channel, $params = [])**
+* **getVideos($channel, $params = [])**
