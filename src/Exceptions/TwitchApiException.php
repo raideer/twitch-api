@@ -1,6 +1,7 @@
 <?php
+
 namespace Raideer\TwitchApi\Exceptions;
 
-class TwitchApiException extends \Exception{
-
+class TwitchApiException extends \Exception
+{
 }

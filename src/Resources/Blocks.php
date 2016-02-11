@@ -1,21 +1,24 @@
 <?php
+
 namespace Raideer\TwitchApi\Resources;
 
 /**
  * Stores and updates information about a user's block list.
  */
-class Blocks extends Resource{
-
-  /**
-   * Returns the resource name
+class Blocks extends Resource
+{
+    /**
+   * Returns the resource name.
+   *
    * @return string
    */
-  public function getName(){
-    return "blocks";
+  public function getName()
+  {
+      return 'blocks';
   }
 
   /**
-   * AUTHENTICATED REQUEST
+   * AUTHENTICATED REQUEST.
    *
    * Returns a list of blocks objects on authenticated user's block list.
    * Sorted by recency, newest first.
@@ -24,23 +27,26 @@ class Blocks extends Resource{
    *
    * Learn more:
    * https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#get-usersuserblocks
+   *
    * @param  string $channel Target Channel name
    * @param  array $params
+   *
    * @return array
    */
-  public function getBlockedUsers($channel, $params = []){
-    $this->wrapper->checkScope("user_blocks_read");
+  public function getBlockedUsers($channel, $params = [])
+  {
+      $this->wrapper->checkScope('user_blocks_read');
 
-    $defaults = [
-      'limit' => 25,
-      'offset' => 0
+      $defaults = [
+      'limit'  => 25,
+      'offset' => 0,
     ];
 
-    return $this->wrapper->request("GET","users/$channel/blocks", ['query' => $this->resolveOptions($params, $defaults)], true);
+      return $this->wrapper->request('GET', "users/$channel/blocks", ['query' => $this->resolveOptions($params, $defaults)], true);
   }
 
   /**
-   * AUTHENTICATED REQUEST
+   * AUTHENTICATED REQUEST.
    *
    * Adds $target to authenticated user's block list. Returns a blocks object.
    *
@@ -51,16 +57,18 @@ class Blocks extends Resource{
    *
    * @param  string $channel Target Channel name
    * @param  string $target Target username
+   *
    * @return array
    */
-  public function blockUser($channel, $target){
-    $this->wrapper->checkScope("user_blocks_edit");
+  public function blockUser($channel, $target)
+  {
+      $this->wrapper->checkScope('user_blocks_edit');
 
-    return $this->wrapper->request("PUT", "users/$channel/blocks/$target", [], true);
+      return $this->wrapper->request('PUT', "users/$channel/blocks/$target", [], true);
   }
 
   /**
-   * AUTHENTICATED REQUEST
+   * AUTHENTICATED REQUEST.
    *
    * Removes $target from $user's block list.
    *
@@ -71,13 +79,13 @@ class Blocks extends Resource{
    *
    * @param  string $user  Target Channel name
    * @param  string $target Target username
+   *
    * @return array
    */
-  public function unblockUser($user, $target){
-    $this->wrapper->checkScope("user_blocks_edit");
+  public function unblockUser($user, $target)
+  {
+      $this->wrapper->checkScope('user_blocks_edit');
 
-    return $this->wrapper->request("DELETE", "users/$user/blocks/$target", [], true);
+      return $this->wrapper->request('DELETE', "users/$user/blocks/$target", [], true);
   }
-
-
 }
