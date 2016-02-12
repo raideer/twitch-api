@@ -74,3 +74,79 @@ Scope: `user_follows_edit`
 * **unfollowChannel($user, $target, $notifications = false)** - Removes $user from $target's followers    
 *AUTHENTICATED*  
 Scope: `user_follows_edit`
+
+### Games
+
+* **getTopGames($params = [])** - Returns a list of games objects sorted by number of current viewers on Twitch, most popular first
+
+### Ingests
+
+* **getIngests()** - Returns a list of ingest objects
+
+### Search
+
+* **searchChannels($query, $params = [])** - Returns a list of channel objects matching the search query
+
+* **searchStreams($query, $params = [])** - Returns a list of stream objects matching the search query
+
+* **searchGames($query, $params = [])** - Returns a list of game objects matching the search query
+
+### Streams
+
+* **getStreams($params = [])** - Returns a list of stream objects that are queried by a number
+
+* **getFeatured($params = [])** - Returns a list of featured (promoted) stream objects
+
+* **getSummary($params = [])** - Returns a summary of current streams
+
+* **getFollowed($params = [])** - Returns a list of stream objects that the authenticated user is following    
+*AUTHENTICATED*  
+Scope: `user_read`
+
+### Subscribtions
+
+* **getSubscribtions($channel, $params = [])** - Returns a list of subscribtion objects sorted by subscribtion relationship creation    
+*AUTHENTICATED*  
+Scope: `channel_subscriptions`
+
+* **getSubscribtion($channel, $user)** - Returns a subscribtion object for $channel witch includes the $user
+*AUTHENTICATED*  
+Scope: `channel_check_subscription`
+
+* **getSubscribtion($user, $channel)** - Returns a $channel object that $user subscribes to    
+*AUTHENTICATED*  
+Scope: `user_subscriptions`
+
+### Teams
+
+* **getTeams($params = [])** - Returns a list of active teams
+
+* **getTeam($team)** - Returns a team object for $team
+
+### Users
+
+* **getUser()** - Returns a user object    
+*AUTHENTICATED*  
+Scope: `user_read`
+
+* **getUser($name)** - Returns a user object    
+
+* **getFollowed($params = [])** - Returns a list of stream objects that the authenticated user is following    
+*AUTHENTICATED*  
+Scope: `user_read`
+
+* **getFollowedVideos($params = [])** - Returns a list of video objects from channels that the authenticated user is following    
+*AUTHENTICATED*  
+Scope: `user_read`
+
+### Videos
+
+* **getVideo($id)** - Returns a video object
+
+* **getTopVideos($params = [])** - Returns a list of videos created in a given time period sorted by
+
+* **getChannelVideos($channel, $params = [])** - Returns a list of videos ordered by time of creation
+
+* **getFollowedVideos($params = [])** - Returns a list of video objects from channels that the authenticated user is following    
+*AUTHENTICATED*  
+Scope: `user_read`
