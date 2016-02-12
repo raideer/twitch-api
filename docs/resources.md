@@ -5,6 +5,14 @@
 | [Channels](#channels) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md |
 | [Chat](#chat) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/chat.md |
 | [Follows](#follows) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/follows.md |
+| [Games](#games) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/games.md |
+| [Ingests](#ingests) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/ingests.md |
+| [Search](#search) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/search.md |
+| [Streams](#streams) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md |
+| [Subscriptions](#subscriptions) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/subscriptions.md |
+| [Teams](#teams) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/teams.md |
+| [Users](#users) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/users.md |
+| [Videos](#videos) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/videos.md |
 ### Blocks
 
 * **getBlockedUsers($user, $params = [])** - Get user's block list   
@@ -103,17 +111,17 @@ Scope: `user_follows_edit`
 *AUTHENTICATED*  
 Scope: `user_read`
 
-### Subscribtions
+### Subscriptions
 
-* **getSubscribtions($channel, $params = [])** - Returns a list of subscribtion objects sorted by subscribtion relationship creation    
+* **getSubscriptions($channel, $params = [])** - Returns a list of subscription objects sorted by subscription relationship creation    
 *AUTHENTICATED*  
 Scope: `channel_subscriptions`
 
-* **getSubscribtion($channel, $user)** - Returns a subscribtion object for $channel witch includes the $user
+* **getSubscription($channel, $user)** - Returns a subscription object for $channel witch includes the $user
 *AUTHENTICATED*  
 Scope: `channel_check_subscription`
 
-* **getSubscribtion($user, $channel)** - Returns a $channel object that $user subscribes to    
+* **getSubscription($user, $channel)** - Returns a $channel object that $user subscribes to    
 *AUTHENTICATED*  
 Scope: `user_subscriptions`
 
