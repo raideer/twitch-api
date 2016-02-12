@@ -64,7 +64,7 @@ class Videos extends Resource{
    * @param  array $params Optional params
    * @return array
    */
-  public function getChannelVideos($params, $options = []){
+  public function getChannelVideos($channel, $params = []){
 
     $defaults = [
       "limit" => 10,
