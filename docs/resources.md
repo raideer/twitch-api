@@ -3,6 +3,8 @@
 | -------- | ---------------------- |
 | [Blocks](#blocks) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md |
 | [Channels](#channels) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/channels.md |
+| [Chat](#chat) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/chat.md |
+| [Follows](#follows) | https://github.com/justintv/Twitch-API/blob/master/v3_resources/follows.md |
 ### Blocks
 
 * **getBlockedUsers($user, $params = [])** - Get user's block list   
@@ -65,10 +67,10 @@ Scope: `channel_commercial`
 
 * **getRelationship($user, $channel)** - Get relationship between $user and $channel
 
-* **followChannel($user, $target, $notifications = false)** - Adds $user to $target's followers
+* **followChannel($user, $target, $notifications = false)** - Adds $user to $target's followers    
 *AUTHENTICATED*  
 Scope: `user_follows_edit`
 
-* **unfollowChannel($user, $target, $notifications = false)** - Removes $user from $target's followers
+* **unfollowChannel($user, $target, $notifications = false)** - Removes $user from $target's followers    
 *AUTHENTICATED*  
 Scope: `user_follows_edit`
