@@ -200,7 +200,7 @@ class OAuth{
     $url .= "&scope=" . implode(" ", $this->scopes);
     $url .= "&state=" . $this->state;
 
-    return $url;
+    return urlencode($url);
   }
 
 }
