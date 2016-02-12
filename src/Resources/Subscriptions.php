@@ -4,18 +4,18 @@ namespace Raideer\TwitchApi\Resources;
 /**
  * Users can subscribe to channels
  */
-class Subscribtions extends Resource{
+class Subscriptions extends Resource{
 
   /**
    * Return the resource name
    * @return string
    */
   public function getName(){
-    return 'subscribtions';
+    return 'subscriptions';
   }
 
   /**
-   * Returns a list of subscribtion objects sorted by subscribtion relationship creation
+   * Returns a list of subscription objects sorted by subscription relationship creation
    * date which contain users subscribed to $channel
    *
    * Learn more:
@@ -25,7 +25,7 @@ class Subscribtions extends Resource{
    * @param  array $params  Optional params
    * @return array
    */
-  public function getSubscribtions($channel, $params = []){
+  public function getSubscriptions($channel, $params = []){
     $this->wrapper->checkScope("channel_subscriptions");
 
     $defaults = [
@@ -42,7 +42,7 @@ class Subscribtions extends Resource{
   }
 
   /**
-   * Returns a subscribtion object which includes the user is subscribed
+   * Returns a subscription object which includes the user is subscribed
    * Requires authentication for $channel
    *
    * Learn more:
@@ -52,7 +52,7 @@ class Subscribtions extends Resource{
    * @param  string $user    Target user
    * @return array
    */
-  public function getSubscribtion($channel, $user){
+  public function getSubscription($channel, $user){
     $this->wrapper->checkScope("channel_check_subscription");
 
     return $this->wrapper->request("GET","channels/$channel/subscriptions/$user", [], true);
@@ -69,7 +69,7 @@ class Subscribtions extends Resource{
    * @param  string $channel Target channel
    * @return array
    */
-  public function getUserSubscribtion($user, $channel){
+  public function getUserSubscription($user, $channel){
     $this->wrapper->checkScope("user_subscriptions");
 
     return $this->wrapper->request("GET","users/$user/subscriptions/$channel", [], true);
