@@ -1,6 +1,7 @@
 <?php
+
 namespace Raideer\TwitchApi\Exceptions;
 
-class OutOfScopeException extends TwitchApiException{
-
+class OutOfScopeException extends TwitchApiException
+{
 }

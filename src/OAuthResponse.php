@@ -1,32 +1,38 @@
 <?php
+
 namespace Raideer\TwitchApi;
 
-class OAuthResponse{
+class OAuthResponse
+{
+    protected $contents;
 
-  protected $contents;
+    public function __construct($data)
+    {
+        $this->contents = $data;
+    }
 
-  public function __construct($data){
-    $this->contents = $data;
-  }
+    public function getContents()
+    {
+        return $this->contents;
+    }
 
-  public function getContents(){
-    return $this->contents;
-  }
+    public function getAccessToken()
+    {
+        return $this->contents['access_token'];
+    }
 
-  public function getAccessToken(){
-    return $this->contents['access_token'];
-  }
+    public function getRefreshToken()
+    {
+        return $this->contents['refresh_token'];
+    }
 
-  public function getRefreshToken(){
-    return $this->contents['refresh_token'];
-  }
+    public function getScope()
+    {
+        return $this->contents['scope'];
+    }
 
-  public function getScope(){
-    return $this->contents['scope'];
-  }
-
-  public function hasScope($scope){
-    return in_array($scope, $this->getScope());
-  }
-
+    public function hasScope($scope)
+    {
+        return in_array($scope, $this->getScope());
+    }
 }
