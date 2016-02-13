@@ -2,6 +2,11 @@
 
 # Twitch API wrapper in PHP
 
+1. Installation
+2. [Basic usage](#basic-unauthenticated-requests)
+3. [Authenticated requests](#authenticated-requests)
+4. [Resources](https://github.com/raideer/twitch-api/blob/master/docs/resources.md)
+
 ## Installation
 
 `composer require raideer/twitch-api`
