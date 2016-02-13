@@ -70,15 +70,6 @@ class Videos extends Resource
    *
    * @return array
    */
-<<<<<<< HEAD
-  public function getChannelVideos($channel, $params = []){
-
-    $defaults = [
-      "limit" => 10,
-      "offset" => 0,
-      "broadcasts" => false,
-      "hls" => false
-=======
   public function getChannelVideos($params, $options = [])
   {
       $defaults = [
@@ -86,7 +77,6 @@ class Videos extends Resource
       'offset'     => 0,
       'broadcasts' => false,
       'hls'        => false,
->>>>>>> c923f5963333108945d5d87da593b694aa1bab2f
     ];
 
       $values = [

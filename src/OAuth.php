@@ -219,18 +219,6 @@ class OAuth
    *
    * @return string   URL
    */
-<<<<<<< HEAD
-  public function getUrl(){
-
-    $url = $this->baseAuthUrl;
-    $url .= "?response_type=code";
-    $url .= "&client_id=" . $this->clientId;
-    $url .= "&redirect_uri=" . $this->redirectUri;
-    $url .= "&scope=" . implode(" ", $this->scopes);
-    $url .= "&state=" . $this->state;
-
-    return urlencode($url);
-=======
   public function getUrl()
   {
       $url = $this->baseAuthUrl;
@@ -241,6 +229,5 @@ class OAuth
       $url .= '&state='.$this->state;
 
       return $url;
->>>>>>> c923f5963333108945d5d87da593b694aa1bab2f
   }
 }
