@@ -26,11 +26,11 @@ class BlocksTest extends PHPUnit_Framework_TestCase
     {
         $this->wrapper->shouldReceive('checkScope')->with('user_blocks_read');
         $this->wrapper->shouldReceive('request')->withArgs([
-      'GET',
-      'users/testUser/blocks',
-      ['query' => ['limit' => 10, 'offset' => 0]],
-      true,
-    ]);
+          'GET',
+          'users/testUser/blocks',
+          ['query' => ['limit' => 10, 'offset' => 0]],
+          true,
+        ]);
 
         $resource = $this->resource;
         $resource->getBlockedUsers('testUser', ['limit' => 10]);
@@ -41,11 +41,11 @@ class BlocksTest extends PHPUnit_Framework_TestCase
         $this->wrapper->shouldReceive('checkScope')->once()->with('user_blocks_edit');
 
         $this->wrapper->shouldReceive('request')->once()->withArgs([
-      'PUT',
-      'users/testChannel/blocks/testUser',
-      [],
-      true,
-    ]);
+          'PUT',
+          'users/testChannel/blocks/testUser',
+          [],
+          true,
+        ]);
 
         $resource = $this->resource;
         $resource->blockUser('testChannel', 'testUser');
@@ -56,11 +56,11 @@ class BlocksTest extends PHPUnit_Framework_TestCase
         $this->wrapper->shouldReceive('checkScope')->once()->with('user_blocks_edit');
 
         $this->wrapper->shouldReceive('request')->once()->withArgs([
-      'DELETE',
-      'users/testChannel/blocks/testUser',
-      [],
-      true,
-    ]);
+          'DELETE',
+          'users/testChannel/blocks/testUser',
+          [],
+          true,
+        ]);
 
         $resource = $this->resource;
         $resource->unblockUser('testChannel', 'testUser');
