@@ -82,7 +82,7 @@ class Channels extends Resource
   {
       $this->wrapper->checkScope('channel_editor');
 
-      return $this->wrapper->request('PUT', "channels/$channel/", ['form_params' => ['channel' => $params]], true);
+      return $this->wrapper->request('PUT', "channels/$channel", ['form_params' => ['channel' => $params]], true);
   }
 
   /**
