@@ -28,14 +28,6 @@ class Throttle
             return;
         }
 
-    // if($this->calls >= $this->limit){
-    //   $blockTill = $this->firstCall + $this->limitTimeframe;
-    //   if($blockTill > $mkTime){
-    //     usleep($blockTill - $mkTime);
-    //     $this->firstCall = microtime();
-    //   }
-    // }
-
     $dif = $mkTime - $this->lastCall;
         if ($dif < $this->waitBeforeNext) {
             usleep($this->waitBeforeNext - $dif);
