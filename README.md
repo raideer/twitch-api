@@ -5,7 +5,7 @@
 1. Installation
 2. [Basic usage](#basic-unauthenticated-requests)
 3. [Authenticated requests](#authenticated-requests)
-4. [Resources](https://github.com/raideer/twitch-api/blob/master/docs/resources.md)
+4. [Resources](https://github.com/raideer/twitch-api/blob/master/resources.md)
 
 ## Installation
 
@@ -23,7 +23,7 @@ $wrapper = new Raideer\TwitchApi\Wrapper($client);
 
 Now we can access various Twitch API resources using the wrapper.    
 You can see all the resources and their methods here:    
-https://github.com/raideer/twitch-api/blob/master/docs/resources.md    
+https://github.com/raideer/twitch-api/blob/master/resources.md    
 https://github.com/justintv/Twitch-API#index
 
 ```php
@@ -155,4 +155,4 @@ echo "I'm currently playing " . $response->game;
 
 ```
 
-### [Resources and their methods](https://github.com/raideer/twitch-api/blob/master/docs/resources.md)
+### [Resources and their methods](https://github.com/raideer/twitch-api/blob/master/resources.md)
