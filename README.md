@@ -41,7 +41,7 @@ Some methods can take an optional array of parameters.
 See the [official twitch api](https://github.com/justintv/Twitch-API) documentation for the list of parameters.
 
 ```php
-$wrapper->Channels->getFollows('lirik', ['limit' => 40, 'direction' => 'asc'])
+$wrapper->Channels->getFollows('lirik', ['limit' => 40, 'direction' => 'asc']);
 ```
 
 ### Authenticated requests
@@ -76,7 +76,7 @@ be returned. It contains the access token, refresh token and registered scopes.
 $response = $oauth->getResponse($code);
 
 $response->getAccessToken();
-$response->getRefreshToken();
+$response->getRefreshToken(); //Token refreshing isn't implemented yet
 $response->getScope();
 $response->hasScope($scope);
 ```
@@ -105,7 +105,7 @@ $wrapper->Channels->getChannel(); //Returns the authenticated user's channel
 
 If the request is out of scope, `Raideer\TwitchApi\Exceptions\OutOfScopeException` will be thrown.
 
-##### Throttling
+##### Throttling (under construction)
 
 If you need, you can enable request throttling.
 
