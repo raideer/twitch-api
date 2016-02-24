@@ -1,7 +1,5 @@
 <?php
 
-use Mockery as m;
-
 class ChannelsTest extends Raideer\TwitchApi\TestCase
 {
     public function __construct()
@@ -11,9 +9,7 @@ class ChannelsTest extends Raideer\TwitchApi\TestCase
 
     public function test_getName_returnsChannels()
     {
-        $resource = $this->resource;
-
-        $this->assertSame('channels', $resource->getName());
+        $this->assertSame('channels', $this->resource->getName());
     }
 
     public function test_getChannel()
@@ -21,27 +17,23 @@ class ChannelsTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('channel_read');
 
         $this->mockRequest(
-            $this->wrapper,
             'GET',
             'channel',
             [],
             true
         );
 
-        $resource = $this->resource;
-        $resource->getChannel();
+        $this->resource->getChannel();
     }
 
     public function test_getChannelName()
     {
         $this->mockRequest(
-            $this->wrapper,
             'GET',
             'channels/testchannel'
         );
 
-        $resource = $this->resource;
-        $resource->getChannel('testchannel');
+        $this->resource->getChannel('testchannel');
     }
 
     public function test_getEditors()
@@ -49,15 +41,13 @@ class ChannelsTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('channel_read');
 
         $this->mockRequest(
-            $this->wrapper,
             'GET',
             'channels/testchannel/editors',
             [],
             true
         );
 
-        $resource = $this->resource;
-        $resource->getEditors('testchannel');
+        $this->resource->getEditors('testchannel');
     }
 
     public function test_updateChannel()
@@ -65,14 +55,12 @@ class ChannelsTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('channel_editor');
 
         $this->mockRequest(
-            $this->wrapper,
             'PUT',
             'channels/testchannel',
             ['channel' => ['status' => 'hello', 'game' => 'Rust']],
             true
         );
 
-        $resource = $this->resource;
-        $resource->updateChannel('testchannel', ['status' => 'hello', 'game' => 'Rust']);
+        $this->resource->updateChannel('testchannel', ['status' => 'hello', 'game' => 'Rust']);
     }
 }

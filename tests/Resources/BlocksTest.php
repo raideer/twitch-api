@@ -1,7 +1,5 @@
 <?php
 
-use Mockery as m;
-
 class BlocksTest extends Raideer\TwitchApi\TestCase
 {
     protected $wrapper;
@@ -22,15 +20,13 @@ class BlocksTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('user_blocks_read');
 
         $this->mockRequest(
-            $this->wrapper,
             'GET',
             'users/testUser/blocks',
             ['limit' => 10, 'offset' => 0],
             true
         );
 
-        $resource = $this->resource;
-        $resource->getBlockedUsers('testUser', ['limit' => 10]);
+        $this->resource->getBlockedUsers('testUser', ['limit' => 10]);
     }
 
     public function test_blockUser()
@@ -38,15 +34,13 @@ class BlocksTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('user_blocks_edit');
 
         $this->mockRequest(
-            $this->wrapper,
             'PUT',
             'users/testChannel/blocks/testUser',
             [],
             true
         );
 
-        $resource = $this->resource;
-        $resource->blockUser('testChannel', 'testUser');
+        $this->resource->blockUser('testChannel', 'testUser');
     }
 
     public function test_unblockUser()
@@ -54,14 +48,12 @@ class BlocksTest extends Raideer\TwitchApi\TestCase
         $this->checkForScope('user_blocks_edit');
 
         $this->mockRequest(
-            $this->wrapper,
             'DELETE',
             'users/testChannel/blocks/testUser',
             [],
             true
         );
 
-        $resource = $this->resource;
-        $resource->unblockUser('testChannel', 'testUser');
+        $this->resource->unblockUser('testChannel', 'testUser');
     }
 }
