@@ -1,18 +1,12 @@
 <?php
 
 use Mockery as m;
-use Raideer\TwitchApi\Resources\Channels;
 
-class ChannelsTest extends PHPUnit_Framework_TestCase
+class ChannelsTest extends Raideer\TwitchApi\TestCase
 {
-    protected $wrapper;
-    protected $resource;
-
-    protected function setUp()
+    public function __construct()
     {
-        $this->wrapper = m::mock("Raideer\TwitchApi\Wrapper");
-        $this->wrapper->shouldReceive('registerResource')->with('Raideer\TwitchApi\Resources\Resource');
-        $this->resource = new Channels($this->wrapper);
+        $this->setResource("Raideer\TwitchApi\Resources\Channels");
     }
 
     public function test_getName_returnsChannels()
@@ -24,13 +18,15 @@ class ChannelsTest extends PHPUnit_Framework_TestCase
 
     public function test_getChannel()
     {
-        $this->wrapper->shouldReceive('checkScope')->with('channel_read');
-        $this->wrapper->shouldReceive('request')->withArgs([
-          'GET',
-          'channel',
-          [],
-          true,
-        ]);
+        $this->checkForScope('channel_read');
+
+        $this->mockRequest(
+            $this->wrapper,
+            'GET',
+            'channel',
+            [],
+            true
+        );
 
         $resource = $this->resource;
         $resource->getChannel();
@@ -38,13 +34,11 @@ class ChannelsTest extends PHPUnit_Framework_TestCase
 
     public function test_getChannelName()
     {
-        $this->wrapper->shouldReceive('checkScope')->with('channel_read');
-        $this->wrapper->shouldReceive('request')->withArgs([
-          'GET',
-          'channel/testchannel',
-          [],
-          true,
-        ]);
+        $this->mockRequest(
+            $this->wrapper,
+            'GET',
+            'channels/testchannel'
+        );
 
         $resource = $this->resource;
         $resource->getChannel('testchannel');
@@ -52,13 +46,15 @@ class ChannelsTest extends PHPUnit_Framework_TestCase
 
     public function test_getEditors()
     {
-        $this->wrapper->shouldReceive('checkScope')->with('channel_read');
-        $this->wrapper->shouldReceive('request')->withArgs([
-          'GET',
-          'channels/testchannel/editors',
-          [],
-          true,
-        ]);
+        $this->checkForScope('channel_read');
+
+        $this->mockRequest(
+            $this->wrapper,
+            'GET',
+            'channels/testchannel/editors',
+            [],
+            true
+        );
 
         $resource = $this->resource;
         $resource->getEditors('testchannel');
@@ -66,13 +62,15 @@ class ChannelsTest extends PHPUnit_Framework_TestCase
 
     public function test_updateChannel()
     {
-        $this->wrapper->shouldReceive('checkScope')->with('channel_editor');
-        $this->wrapper->shouldReceive('request')->withArgs([
-          'PUT',
-          'channels/testchannel',
-          ['form_params' => ['status' => 'hello', 'game' => 'Rust']],
-          true,
-        ]);
+        $this->checkForScope('channel_editor');
+
+        $this->mockRequest(
+            $this->wrapper,
+            'PUT',
+            'channels/testchannel',
+            ['channel' => ['status' => 'hello', 'game' => 'Rust']],
+            true
+        );
 
         $resource = $this->resource;
         $resource->updateChannel('testchannel', ['status' => 'hello', 'game' => 'Rust']);
