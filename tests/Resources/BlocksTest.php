@@ -1,36 +1,33 @@
 <?php
 
 use Mockery as m;
-use Raideer\TwitchApi\Resources\Blocks;
 
-class BlocksTest extends PHPUnit_Framework_TestCase
+class BlocksTest extends Raideer\TwitchApi\TestCase
 {
     protected $wrapper;
     protected $resource;
 
-    protected function setUp()
+    public function __construct()
     {
-        $this->wrapper = m::mock("Raideer\TwitchApi\Wrapper");
-        $this->wrapper->shouldReceive('registerResource')->with('Raideer\TwitchApi\Resources\Resource');
-        $this->resource = new Blocks($this->wrapper);
+        $this->setResource("Raideer\TwitchApi\Resources\Blocks");
     }
 
     public function test_getName_returnsBlocks()
     {
-        $resource = $this->resource;
-
-        $this->assertSame('blocks', $resource->getName());
+        $this->assertSame('blocks', $this->resource->getName());
     }
 
     public function test_getBlockedUsers()
     {
-        $this->wrapper->shouldReceive('checkScope')->with('user_blocks_read');
-        $this->wrapper->shouldReceive('request')->withArgs([
-          'GET',
-          'users/testUser/blocks',
-          ['query' => ['limit' => 10, 'offset' => 0]],
-          true,
-        ]);
+        $this->checkForScope('user_blocks_read');
+
+        $this->mockRequest(
+            $this->wrapper,
+            'GET',
+            'users/testUser/blocks',
+            ['limit' => 10, 'offset' => 0],
+            true
+        );
 
         $resource = $this->resource;
         $resource->getBlockedUsers('testUser', ['limit' => 10]);
@@ -38,14 +35,15 @@ class BlocksTest extends PHPUnit_Framework_TestCase
 
     public function test_blockUser()
     {
-        $this->wrapper->shouldReceive('checkScope')->once()->with('user_blocks_edit');
+        $this->checkForScope('user_blocks_edit');
 
-        $this->wrapper->shouldReceive('request')->once()->withArgs([
-          'PUT',
-          'users/testChannel/blocks/testUser',
-          [],
-          true,
-        ]);
+        $this->mockRequest(
+            $this->wrapper,
+            'PUT',
+            'users/testChannel/blocks/testUser',
+            [],
+            true
+        );
 
         $resource = $this->resource;
         $resource->blockUser('testChannel', 'testUser');
@@ -53,14 +51,15 @@ class BlocksTest extends PHPUnit_Framework_TestCase
 
     public function test_unblockUser()
     {
-        $this->wrapper->shouldReceive('checkScope')->once()->with('user_blocks_edit');
+        $this->checkForScope('user_blocks_edit');
 
-        $this->wrapper->shouldReceive('request')->once()->withArgs([
-          'DELETE',
-          'users/testChannel/blocks/testUser',
-          [],
-          true,
-        ]);
+        $this->mockRequest(
+            $this->wrapper,
+            'DELETE',
+            'users/testChannel/blocks/testUser',
+            [],
+            true
+        );
 
         $resource = $this->resource;
         $resource->unblockUser('testChannel', 'testUser');
