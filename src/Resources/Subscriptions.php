@@ -58,7 +58,6 @@ class Subscriptions extends Resource
    *
    * @return array
    */
-
   public function getSubscribtion($channel, $user)
   {
       $this->wrapper->checkScope('channel_check_subscription');
@@ -78,7 +77,6 @@ class Subscriptions extends Resource
    *
    * @return array
    */
-
   public function getUserSubscribtion($user, $channel)
   {
       $this->wrapper->checkScope('user_subscriptions');

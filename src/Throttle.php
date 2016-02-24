@@ -28,7 +28,7 @@ class Throttle
             return;
         }
 
-    $dif = $mkTime - $this->lastCall;
+        $dif = $mkTime - $this->lastCall;
         if ($dif < $this->waitBeforeNext) {
             usleep($this->waitBeforeNext - $dif);
         }

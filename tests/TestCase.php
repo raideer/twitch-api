@@ -6,7 +6,6 @@ use Mockery as m;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-
     protected $resourceName;
     protected $resource;
     protected $wrapper;
@@ -18,7 +17,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->wrapper = m::mock("Raideer\TwitchApi\Wrapper");
+        $this->wrapper = m::mock('Raideer\TwitchApi\Wrapper');
         $this->wrapper->shouldReceive('registerResource')->with('Raideer\TwitchApi\Resources\Resource');
         $resourceReflection = new \ReflectionClass($this->resourceName);
         $this->resource = $resourceReflection->newInstance($this->wrapper);
@@ -36,10 +35,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $args[] = $url;
 
         if (!empty($params)) {
-            if ($type == "GET") {
-                $args[] = ["query" => $params];
+            if ($type == 'GET') {
+                $args[] = ['query' => $params];
             } else {
-                $args[] = ["form_params" => $params];
+                $args[] = ['form_params' => $params];
             }
         } elseif ($authenticated) {
             $args[] = [];
@@ -49,6 +48,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $args[] = $authenticated;
         }
 
-        return $this->wrapper->shouldReceive("request")->withArgs($args);
+        return $this->wrapper->shouldReceive('request')->withArgs($args);
     }
 }
