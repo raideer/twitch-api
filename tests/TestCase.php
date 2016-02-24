@@ -29,7 +29,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->wrapper->shouldReceive('checkScope')->with($scope);
     }
 
-    public function mockRequest($mock, $type, $url, $params = [], $authenticated = false)
+    public function mockRequest($type, $url, $params = [], $authenticated = false)
     {
         $args = [];
         $args[] = $type;
@@ -49,6 +49,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $args[] = $authenticated;
         }
 
-        return $mock->shouldReceive("request")->withArgs($args);
+        return $this->wrapper->shouldReceive("request")->withArgs($args);
     }
 }
