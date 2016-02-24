@@ -58,8 +58,8 @@ class Chat extends Resource
   public function getEmoticonImages($params = [])
   {
       $defaults = [
-      'emotesets' => null,
-    ];
+          'emotesets' => null,
+      ];
 
       return $this->wrapper->request('GET', 'chat/emoticon_images', ['query' => $this->resolveOptions($params, $defaults)]);
   }
