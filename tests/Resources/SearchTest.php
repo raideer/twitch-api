@@ -19,9 +19,9 @@ class SearchTest extends Raideer\TwitchApi\TestCase
             'GET',
             'search/channels',
             [
-                'query' => urlencode($query),
-                'limit' => 10,
-                'offset' => 0
+                'query'  => urlencode($query),
+                'limit'  => 10,
+                'offset' => 0,
             ]
         );
 
@@ -35,10 +35,10 @@ class SearchTest extends Raideer\TwitchApi\TestCase
             'GET',
             'search/streams',
             [
-                'query' => urlencode($query),
-                'limit' => 10,
+                'query'  => urlencode($query),
+                'limit'  => 10,
                 'offset' => 0,
-                'hls' => null
+                'hls'    => null,
             ]
         );
 
@@ -54,8 +54,8 @@ class SearchTest extends Raideer\TwitchApi\TestCase
             [
                 'query' => urlencode($query),
                 'limit' => 10,
-                'type' => 'suggest',
-                'live' => true
+                'type'  => 'suggest',
+                'live'  => true,
             ]
         );
 
