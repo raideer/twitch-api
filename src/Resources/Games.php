@@ -31,9 +31,9 @@ class Games extends Resource
   public function getTopGames($params = [])
   {
       $defaults = [
-      'limit'  => 10,
-      'offset' => 0,
-    ];
+          'limit'  => 10,
+          'offset' => 0,
+      ];
 
       return $this->wrapper->request('GET', 'games/top', ['query' => $this->resolveOptions($params, $defaults)]);
   }
