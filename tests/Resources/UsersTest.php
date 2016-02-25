@@ -43,7 +43,7 @@ class UsersTest extends Raideer\TwitchApi\TestCase
             'videos/followed',
             [
                 'limit'  => 15,
-                'offset' => 0
+                'offset' => 0,
             ],
             true
         );
