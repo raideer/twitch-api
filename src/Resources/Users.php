@@ -71,9 +71,9 @@ class Users extends Resource
       $this->wrapper->checkScope('user_read');
 
       $defaults = [
-      'limit'  => 10,
-      'offset' => 0,
-    ];
+          'limit'  => 10,
+          'offset' => 0,
+      ];
 
       return $this->wrapper->request('GET', 'videos/followed', ['query' => $this->resolveOptions($params, $defaults)], true);
   }
