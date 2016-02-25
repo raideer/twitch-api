@@ -4,12 +4,12 @@ class FollowsTest extends Raideer\TwitchApi\TestCase
 {
     public function __construct()
     {
-      $this->setResource("Raideer\TwitchApi\Resources\Follows");
+        $this->setResource("Raideer\TwitchApi\Resources\Follows");
     }
 
     public function test_getName_returnsFollows()
     {
-      $this->assertSame('follows', $this->resource->getName());
+        $this->assertSame('follows', $this->resource->getName());
     }
 
     public function test_getFollowers()
