@@ -45,15 +45,15 @@ class Videos extends Resource
   public function getTopVideos($params = [])
   {
       $defaults = [
-      'limit'  => 10,
-      'offset' => 0,
-      'game'   => null,
-      'period' => 'week',
-    ];
+          'limit'  => 10,
+          'offset' => 0,
+          'game'   => null,
+          'period' => 'week',
+      ];
 
       $values = [
-      'period' => ['week', 'month', 'all'],
-    ];
+          'period' => ['week', 'month', 'all'],
+      ];
 
       return $this->wrapper->request('GET', 'videos/top', ['query' => $this->resolveOptions($params, $defaults, [], $values)]);
   }
@@ -70,19 +70,19 @@ class Videos extends Resource
    *
    * @return array
    */
-  public function getChannelVideos($params, $options = [])
+  public function getChannelVideos($channel, $params = [])
   {
       $defaults = [
-      'limit'      => 10,
-      'offset'     => 0,
-      'broadcasts' => false,
-      'hls'        => false,
-    ];
+          'limit'      => 10,
+          'offset'     => 0,
+          'broadcasts' => false,
+          'hls'        => false,
+      ];
 
       $values = [
-      'hls'        => [true, false],
-      'broadcasts' => [true, false],
-    ];
+          'hls'        => [true, false],
+          'broadcasts' => [true, false],
+      ];
 
       return $this->wrapper->request('GET', "channels/$channel/videos", ['query' => $this->resolveOptions($params, $defaults, [], $values)]);
   }
