@@ -30,9 +30,9 @@ class Teams extends Resource
   public function getTeams($params = [])
   {
       $defaults = [
-      'limit'  => 25,
-      'offset' => 0,
-    ];
+          'limit'  => 25,
+          'offset' => 0,
+      ];
 
       return $this->wrapper->request('GET', 'teams', ['query' => $this->resolveOptions($params, $defaults)]);
   }
