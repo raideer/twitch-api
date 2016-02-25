@@ -14,7 +14,7 @@ class Subscriptions extends Resource
    */
   public function getName()
   {
-      return 'subscribtions';
+      return 'subscriptions';
   }
 
   /**
@@ -34,14 +34,14 @@ class Subscriptions extends Resource
       $this->wrapper->checkScope('channel_subscriptions');
 
       $defaults = [
-      'limit'     => 25,
-      'offset'    => 0,
-      'direction' => 'asc',
-    ];
+          'limit'     => 25,
+          'offset'    => 0,
+          'direction' => 'asc',
+      ];
 
       $values = [
-      'direction' => ['asc', 'desc'],
-    ];
+          'direction' => ['asc', 'desc'],
+      ];
 
       return $this->wrapper->request('GET', "channels/$channel/subscriptions", ['query' => $this->resolveOptions($params, $defaults, [], $values)], true);
   }
