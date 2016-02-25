@@ -47,17 +47,17 @@ class Streams extends Resource
   public function getStreams($params = [])
   {
       $defaults = [
-      'game'        => null,
-      'channel'     => null,
-      'limit'       => 25,
-      'offset'      => 0,
-      'client_id'   => null,
-      'stream_type' => 'all',
-    ];
+          'game'        => null,
+          'channel'     => null,
+          'limit'       => 25,
+          'offset'      => 0,
+          'client_id'   => null,
+          'stream_type' => 'all',
+      ];
 
       $types = [
-      'stream_type' => ['all', 'playlist', 'live'],
-    ];
+          'stream_type' => ['all', 'playlist', 'live'],
+      ];
 
       return $this->wrapper->request('GET', 'streams', ['query' => $this->resolveOptions($params, $defaults, [], $types)]);
   }
@@ -75,9 +75,9 @@ class Streams extends Resource
   public function getFeatured($params = [])
   {
       $defaults = [
-      'limit'  => 25,
-      'offset' => 0,
-    ];
+          'limit'  => 25,
+          'offset' => 0,
+      ];
 
       return $this->wrapper->request('GET', 'streams/featured', ['query' => $this->resolveOptions($params, $defaults)]);
   }
@@ -112,14 +112,14 @@ class Streams extends Resource
       $this->wrapper->checkScope('user_read');
 
       $defaults = [
-      'limit'       => 25,
-      'offset'      => 0,
-      'stream_type' => 'all',
-    ];
+          'limit'       => 25,
+          'offset'      => 0,
+          'stream_type' => 'all',
+      ];
 
       $values = [
-      'stream_type' => ['all', 'playlist', 'live'],
-    ];
+          'stream_type' => ['all', 'playlist', 'live'],
+      ];
 
       return $this->wrapper->request('GET', 'streams/followed', ['query' => $this->resolveOptions($params, $defaults, [], $values)], true);
   }
