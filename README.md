@@ -1,4 +1,4 @@
-[![Latest Stable Version](https://poser.pugx.org/raideer/twitch-api/v/stable)](https://packagist.org/packages/raideer/twitch-api) [![Total Downloads](https://poser.pugx.org/raideer/twitch-api/downloads)](https://packagist.org/packages/raideer/twitch-api) [![Latest Unstable Version](https://poser.pugx.org/raideer/twitch-api/v/unstable)](https://packagist.org/packages/raideer/twitch-api) [![License](https://poser.pugx.org/raideer/twitch-api/license)](https://packagist.org/packages/raideer/twitch-api)
+[![Latest Stable Version](https://poser.pugx.org/raideer/twitch-api/v/stable)](https://packagist.org/packages/raideer/twitch-api) [![Total Downloads](https://poser.pugx.org/raideer/twitch-api/downloads)](https://packagist.org/packages/raideer/twitch-api) [![Latest Unstable Version](https://poser.pugx.org/raideer/twitch-api/v/unstable)](https://packagist.org/packages/raideer/twitch-api) [![License](https://poser.pugx.org/raideer/twitch-api/license)](https://packagist.org/packages/raideer/twitch-api) [![StyleCI](https://styleci.io/repos/48586755/shield)](https://styleci.io/repos/48586755)
 
 # Twitch API wrapper in PHP
 
