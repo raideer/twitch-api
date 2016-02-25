@@ -31,10 +31,10 @@ class Search extends Resource
   public function searchChannels($query, $params = [])
   {
       $defaults = [
-      'query'  => urlencode($query),
-      'limit'  => 25,
-      'offset' => 0,
-    ];
+          'query'  => urlencode($query),
+          'limit'  => 25,
+          'offset' => 0,
+      ];
 
       return $this->wrapper->request('GET', 'search/channels', ['query' => $this->resolveOptions($params, $defaults)]);
   }
