@@ -62,7 +62,7 @@ class StreamsTest extends Raideer\TwitchApi\TestCase
             'GET',
             'streams/summary',
             [
-                'game' => 'Rust'
+                'game' => 'Rust',
             ]
         );
 
