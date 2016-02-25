@@ -7,7 +7,7 @@ class StreamsTest extends Raideer\TwitchApi\TestCase
         $this->setResource('Raideer\TwitchApi\Resources\Streams');
     }
 
-    public function test_getName_returnsIngests()
+    public function test_getName_returnsStreams()
     {
         $this->assertSame('streams', $this->resource->getName());
     }
