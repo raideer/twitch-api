@@ -76,12 +76,12 @@ class Search extends Resource
   public function searchGames($query, $params = [])
   {
       $defaults = [
-      'query' => urlencode($query),
-      'limit' => 25,
-      'type'  => 'suggest',
-      'live'  => false,
-    ];
+          'query' => urlencode($query),
+          'limit' => 25,
+          'type'  => 'suggest',
+          'live'  => false,
+      ];
 
-      return $this->wrapper - request('GET', 'search/games', ['query' => $this->resolveOptions($params, $defaults)]);
+      return $this->wrapper->request('GET', 'search/games', ['query' => $this->resolveOptions($params, $defaults)]);
   }
 }
