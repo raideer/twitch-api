@@ -59,9 +59,9 @@ $settings = [
   'scope'         => 'Array or space seperated string of scopes'
 ];
 
-$oauth = new Raideer\TwitchApi\Oauth($settings);
+$oauth = new Raideer\TwitchApi\OAuth($settings);
 
-//Builds the authentication URL
+//Returns the authentication URL
 $url = $oauth->getUrl();
 ```
 
