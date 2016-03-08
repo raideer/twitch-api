@@ -149,9 +149,9 @@ $code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
 $response = $oauth->getResponse($code);
 $wrapper->authorize($response);
 
-$response = $wrapper->Channels->getChannel();
+$channel = $wrapper->Channels->getChannel();
 
-echo "I'm currently playing " . $response->game;
+echo "I'm currently playing " . $channel->game;
 
 ```
 
