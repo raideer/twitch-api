@@ -94,8 +94,8 @@ $wrapper->authorize($accessToken);
 $wrapper->authorize($accessToken, $registeredScopes);
 ```
 
-If you authorize the wrapper only by passing the access token, the Wrapper will not be able to check wether the scope
-you're trying to access actually exists.
+If you authorize the wrapper only by passing the access token, the Wrapper will not be able to check whether the scope
+you're trying to access actually exists. (Useful if you don't want to make unnecessary requests)
 
 Now you can make authorized requests.
 
